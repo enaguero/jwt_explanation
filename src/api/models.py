@@ -19,4 +19,8 @@ class User(db.Model):
         }
         
     def set_password(self, password):
+        # Using srt we make sure to convert any value to string
         self.password_hash = generate_password_hash(str(password))
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
