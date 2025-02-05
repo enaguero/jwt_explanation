@@ -20,3 +20,17 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+@api.route('/sign_up', methods=['POST'])
+def sign_up():
+    # Type of params: https://stackoverflow.com/questions/10434599/get-the-data-received-in-a-flask-request 
+    # Security : https://dev.to/goke/securing-your-flask-application-hashing-passwords-tutorial-2f0p
+
+    processed_params = request.get_json()
+    print("PARAMS", processed_params)
+    new_user = User(email=processed_params['email'], is_active=True)
+    new_user.set_password(processed_params['password'])
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({"msg": "User was created"}), 201
